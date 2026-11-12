@@ -1,0 +1,27 @@
+# LinuxBoot open-vs-closed map for B450AORUSPRO.F67c (16 MiB)
+# start     end        size       class    note
+  0x000000 0x020000 0x0020000  n/a     padding                            all 0xFF
+  0x020000 0x037000 0x0017000  CLOSED  AMD EFS + early pointers           PSP reads this; fixed
+  0x037000 0x057000 0x0020000  CLOSED* NVRAM (UEFI variables)             AMI var store; kept (or cleared)
+  0x057000 0x0e7000 0x0090000  n/a     padding/unused                     
+  0x0e7000 0x0e8000 0x0001000  CLOSED  PSP2/BHD2 combo directories        AMD signed dir tables
+  0x0e8000 0x24f000 0x0167000  CLOSED  PSP blobs: bootloader/ABL/SMU/…    AMD signed; required
+  0x241000 0x3b2000 0x0171000  CLOSED  APCB (memory/board config)         consumed by AGESA/ABL
+  0x3df000 0x60f000 0x0230000  CLOSED  per-gen PSP dirs + APCB            AMD signed
+  0x60f000 0x90f000 0x0300000  CLOSED  PSP L2 blobs (Matisse/Vermeer)     AMD signed
+  0x90f000 0x94f000 0x0040000  CLOSED  Promontory (B450) chipset FW       AMD signed _PT_ blob; required
+  0x94f000 0xe3f000 0x04f0000  OPEN    MAIN DXE firmware volume           REPLACE with LinuxBoot payload
+  0xe3f000 0xe40000 0x0001000  CLOSED  small freeform FV                  tiny; keep
+  0xe40000 0x1000000 0x01c0000  CLOSED  PEI/bootblock FV (RTM)             PSP-measured; SEC+PEI+AGESA; keep
+
+# The ONLY region LinuxBoot opens: the MAIN DXE FV @ 0x94f000 (0x4f0000 = 4.9 MiB on-flash,
+#   ~12.6 MiB decompressed, 309 DXE drivers). Everything else stays AMD-signed/AMI and is required.
+# Open fraction of the 16 MiB image (by on-flash size): ~31%.
+# * NVRAM is AMI-format but user data; typically preserved or reset, not "opened".
+#
+# What stays closed and WHY it cannot be opened on this board:
+#   - PSP bootloader/ABL/SMU/PMU/SEC-gasket : AMD signed; the on-die PSP verifies them before x86 runs.
+#   - AGESA (in PEI FV) : AMD memory/fabric init; no open replacement for AM4 desktop (openSIL is Zen4+).
+#   - Promontory FW : AMD signed chipset firmware; required for USB/SATA/PCIe.
+#   - CPU microcode : AMD signed.
+#   LinuxBoot keeps all of these and only swaps the UEFI DXE/boot environment for Linux+u-root.

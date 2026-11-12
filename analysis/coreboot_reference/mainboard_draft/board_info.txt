@@ -1,0 +1,9 @@
+Vendor name: Gigabyte
+Board name: B450 AORUS PRO
+Category: desktop
+Board URL: https://www.gigabyte.com/Motherboard/B450-AORUS-PRO-rev-10
+ROM package: SOIC-8
+ROM protocol: SPI
+ROM socketed: n
+Flashrom support: y
+Release year: 2018

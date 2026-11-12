@@ -1,0 +1,21 @@
+# Complete 16 MiB flash map of B450AORUSPRO.F67c (derived; overlaps = nested/adjacent)
+# start      end        size      region
+  0x0000000  0x0020000  0x0020000  padding (0xFF)
+  0x0020000  0x0020050  0x0000050  AMD EFS (Embedded Firmware Structure, 0x55AA55AA)
+  0x0037000  0x0057000  0x0020000  NVRAM FV (UEFI variables)
+  0x00e7000  0x00e7800  0x0000800  PSP2 combo directory (6 generations)
+  0x00e7800  0x00e8000  0x0000800  BHD2 combo directory (Matisse/Vermeer)
+  0x0241000  0x0241fa0  0x0000fa0  APCB Zen/Zen+ #1
+  0x03b0000  0x03b1700  0x0001700  APCB Zen/Zen+ #2
+  0x0771000  0x0773248  0x0002248  APCB Matisse (backup)
+  0x0775000  0x0775210  0x0000210  APCB Matisse (primary)
+  0x08f1000  0x08f32b8  0x00022b8  APCB Vermeer (backup)
+  0x08f5000  0x08f5210  0x0000210  APCB Vermeer (primary)
+  0x090f000  0x092b00c  0x001c00c  Promontory FW 300-series (_PT_)
+  0x092f000  0x094b00c  0x001c00c  Promontory FW 400-series/B450 (_PT_)
+  0x094f000  0x0e3f000  0x04f0000  MAIN DXE firmware volume
+  0x0e40000  0x1000000  0x01c0000  PEI/bootblock FV (RTM, measured by PSP)
+  0x0fffff0  0x1000000  0x0000010  reset vector region (top)
+
+# total image: 0x1000000 (16 MiB), mapped just below 4 GiB (base 0xff000000)
+# AMDFW signed region (PSP/BHD + per-gen blobs) spans ~0xe7000..0x94f000; see amdfw_psp_combo.txt

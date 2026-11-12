@@ -1,0 +1,33 @@
+# $A10 GPIO init table @ 0x12f0 (size 0x410) from analysis/modules/AmdCpmOemInitPeim_1.efi
+# pin    setting  iomux  direction       pull         coreboot-style
+    2  0x000882  0      input           none         PAD_GPI(GPIO_2, PULL_NONE)
+    5  0x000880  0      output LOW      none         PAD_GPO(GPIO_5, LOW)
+   17  0x000888  0      unchanged       none         PAD_NF(GPIO_17, <func 0>, PULL_NONE)
+   91  0x000888  0      unchanged       none         PAD_NF(GPIO_91, <func 0>, PULL_NONE)
+  115  0x0008a8  0      unchanged       pull-up      PAD_NF(GPIO_115, <func 0>, PULL-UP)
+  129  0x0008a8  0      unchanged       pull-up      PAD_NF(GPIO_129, <func 0>, PULL-UP)
+   85  0x000981  1      output HIGH     none         PAD_GPO(GPIO_85, HIGH)
+  116  0x000982  1      input           none         PAD_GPI(GPIO_116, PULL_NONE)
+   95  0x000982  1      input           none         PAD_GPI(GPIO_95, PULL_NONE)
+   99  0x000982  1      input           none         PAD_GPI(GPIO_99, PULL_NONE)
+   96  0x000982  1      input           none         PAD_GPI(GPIO_96, PULL_NONE)
+   97  0x000982  1      input           none         PAD_GPI(GPIO_97, PULL_NONE)
+   98  0x000982  1      input           none         PAD_GPI(GPIO_98, PULL_NONE)
+    8  0x000882  0      input           none         PAD_GPI(GPIO_8, PULL_NONE)
+
+# $A10 GPIO init table @ 0x32a8 (size 0x410) from analysis/modules/AmdCpmOemInitPeim_2.efi
+# pin    setting  iomux  direction       pull         coreboot-style
+    2  0x000882  0      input           none         PAD_GPI(GPIO_2, PULL_NONE)
+    5  0x000880  0      output LOW      none         PAD_GPO(GPIO_5, LOW)
+   17  0x000888  0      unchanged       none         PAD_NF(GPIO_17, <func 0>, PULL_NONE)
+   91  0x000888  0      unchanged       none         PAD_NF(GPIO_91, <func 0>, PULL_NONE)
+  115  0x0008ac  0      unchanged       pull-up(PUsel) PAD_NF(GPIO_115, <func 0>, PULL-UP(PUSEL))
+  129  0x0008a8  0      unchanged       pull-up      PAD_NF(GPIO_129, <func 0>, PULL-UP)
+   85  0x000981  1      output HIGH     none         PAD_GPO(GPIO_85, HIGH)
+  116  0x000982  1      input           none         PAD_GPI(GPIO_116, PULL_NONE)
+  136  0x000982  1      input           none         PAD_GPI(GPIO_136, PULL_NONE)
+  138  0x000982  1      input           none         PAD_GPI(GPIO_138, PULL_NONE)
+  135  0x000a82  2      input           none         PAD_GPI(GPIO_135, PULL_NONE)
+  141  0x000982  1      input           none         PAD_GPI(GPIO_141, PULL_NONE)
+  140  0x000a82  2      input           none         PAD_GPI(GPIO_140, PULL_NONE)
+    8  0x000882  0      input           none         PAD_GPI(GPIO_8, PULL_NONE)

@@ -1,0 +1,56 @@
+### --dump (EFS)
+EFS Generation:            second
+
+Family 15h Models 60h-6Fh
+  SPI Read Mode          unknown<ff>mode
+  SPI Frequency:         unknown<ff>MHz
+
+Family 17h Models 00h-0Fh
+  PSP Dir:               000e7000
+  BIOS Dir:              ff240000
+  SPI Read Mode:         unknown<ff>mode
+  Fast Speed New:        unknown<ff>MHz
+  QPR_Dummy Cycle configure:    0xff
+
+
+Family 17h Models 10h-1Fh
+  BIOS Dir:              ff3af000
+Family 17h Models 30h-3Fh and later Families
+  BIOS Dir:              005df000
+  SPI Read Mode:         Quad IO (1-4-4)
+  SPI Fast Speed:        66.66MHz
+  Micron Detect Flag:    0x55
+
+Family 19h Models 00h-0Fh and later Families
+  Multi Gen EFS:         fffffffe
+  BIOS Dir:              000e7800
+
+Family 1Ah Models 50h-5Fh and later Families
+  PSPL1 backup:          ffffffff
+  BIOS Dir:              000e7800
+
+Misc info
+  Promontory FW:         ff90f000
+  LP Promontory FW:      ff92f000
+  Promontory19 FW:       00000000
+  Vendor ID:             ffff
+  Board ID:              ffff
+  ESPI0 Config:          ff
+  ESPI0 Config1:         ff
+  ESPI1 Config:          ff
+  ESPI1 Config1:         ff
+  UBU Table:             ffffffff
+  BIOS size:             not implemented
+
+
+### --soft-fuse
+Invalid PSP header cookie value found: 0x50535032, expected: 0x50535024
+
+### --ro-list
+Invalid PSP header cookie value found: 0x50535032, expected: 0x50535024
+Invalid PSP header cookie value found: 0x50535032, expected: 0x50535024
+Invalid PSP header cookie value found: 0x44484232, expected: 0x44484224
+Invalid BIOS header cookie value found: 0x44484232, expected: 0x44484224
+Table: FW   Offset     Size
+PSPL1: Dir  @0x000e7000
+BIOSL1: Dir  @0x000e7800

@@ -1,0 +1,31 @@
+# build output and downloaded sources
+out/
+linuxboot/toolchain/
+*.log.tmp
+build-test.log
+__pycache__/
+
+# QEMU run files
+esp/
+*.img
+ovmf_vars.fd
+modstage/
+
+# binaries / vendor material (never commit)
+*.efi
+*.EFI
+*.rom
+*.bin
+*.fd
+*.aml
+*.cpio
+*.cpio.*
+*.zip
+*.F6*
+bzImage*
+*.dump/
+
+# personal hardware reports
+hwinfo-*/
+report-*/
+reports/

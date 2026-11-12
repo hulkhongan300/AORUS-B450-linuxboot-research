@@ -1,0 +1,12 @@
+# $A26 DXIO descriptors @ 0x2828 from analysis/modules/AmdCpmOemInitPeim_1.efi
+  [0] PCIE     lanes 16-31 (x16) present=1 -> 00:03.1  gpio_grp=2 pd0=0x119 pd2=0x80 eflags=0x0
+  [1] UNUSED   lanes 16-23 (x8 ) present=1 -> 00:03.2  gpio_grp=1 pd0=0x219 pd2=0x80 eflags=0x0
+  [2] PCIE     lanes  7- 4 (x-2) present=1 -> 00:01.3  gpio_grp=3 pd0=0x309 pd2=0x4 eflags=0x0
+  [3] UNUSED   lanes 20-23 (x4 ) present=1 -> 00:03.3  gpio_grp=2 pd0=0x319 pd2=0x80 eflags=0x0
+  [4] UNUSED   lanes 16-19 (x4 ) present=1 -> 00:03.4  gpio_grp=2 pd0=0x419 pd2=0x80 eflags=0x0  [END]
+# $A26 DXIO descriptors @ 0x1618 from analysis/modules/AmdCpmOemInitPeim_2.efi
+  [0] PCIE     lanes 16-31 (x16) present=1 -> 00:03.1  gpio_grp=2 pd0=0x119 pd2=0x80 eflags=0x0
+  [1] UNUSED   lanes 16-23 (x8 ) present=1 -> 00:03.2  gpio_grp=1 pd0=0x219 pd2=0x80 eflags=0x0
+  [2] PCIE     lanes  8-11 (x4 ) present=1 -> 00:01.3  gpio_grp=3 pd0=0x309 pd2=0x4 eflags=0x0
+  [3] UNUSED   lanes 20-23 (x4 ) present=1 -> 00:03.3  gpio_grp=2 pd0=0x319 pd2=0x80 eflags=0x0
+  [4] UNUSED   lanes 16-19 (x4 ) present=1 -> 00:03.4  gpio_grp=2 pd0=0x419 pd2=0x80 eflags=0x0  [END]

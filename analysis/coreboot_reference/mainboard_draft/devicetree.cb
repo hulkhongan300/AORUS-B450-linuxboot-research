@@ -1,0 +1,50 @@
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# DRAFT / REFERENCE ONLY — NOT BUILDABLE.
+# Gigabyte B450 AORUS PRO, reconstructed from the stock BIOS + live lspci/ACPI.
+# Targets a hypothetical src/soc/amd/<am4-desktop> (Summit..Vermeer) that does NOT exist upstream.
+#
+# Device paths/_ADR from the stock DSDT (analysis/acpi) and live `lspci -t`:
+#   00:01.1 GPP0   00:01.2 GPP1   00:01.3 GPP2 (B450 chipset uplink, x4)
+#   00:03.1 GPP8   (PCIe x16 slot / GPU)
+#   00:07.1 GP17 / 00:08.1 GP18  (internal: xHCI, SATA, PSP/CCP)
+#   00:14.0 SMBus  00:14.3 LPC bridge (1022:790e)
+# PCIe/DXIO lane map from $A26 (analysis/pcie_dxio_topology.txt).
+
+chip soc/amd/am4_desktop		# hypothetical SoC
+
+	device domain 0 on
+		device ref gpp_bridge_0 on end		# 00:01.1  GPP0  -> M.2 (NVMe, lanes 0-3)  [or SATA, strap-dependent]
+		device ref gpp_bridge_1 on end		# 00:01.2  GPP1
+		device ref gpp_bridge_2 on		# 00:01.3  GPP2  -> B450 Promontory (lanes 8-11 x4)
+			# downstream: 01:00.0 xHCI(43d5), 01:00.1 SATA(43c8), 01:00.2 bridge(43c6) -> 02:xx
+		end
+		device ref gpp_bridge_a on end		# 00:03.1  GPP8  -> PCIe x16 (lanes 16-31)  [GPU: RX 580 on test rig]
+
+		device ref gfx on end			# internal GNB (APU only)
+		device ref crypto on end		# 00:08.0 CCP/PSP
+
+		chip superio/ite/it8686e		# Super I/O #1 @ 0x2E  (driver TODO; it8689e is closest)
+			device pnp 2e.4 on		# EC / HW monitor @ 0xA40
+				io 0x60 = 0xa40
+				io 0x62 = 0xa30
+				irq 0x70 = 0
+			end
+			device pnp 2e.5 on		# PS/2 keyboard
+				io 0x60 = 0x60
+				io 0x62 = 0x64
+				irq 0x70 = 1
+			end
+			device pnp 2e.7 on		# GPIO
+				io 0x62 = 0xa00
+			end
+		end
+		chip superio/ite/it8792e		# Super I/O #2 @ 0x4E  (driver TODO) — CONFIRMED it8792-isa-0a60
+			device pnp 4e.4 on		# 2nd HW monitor @ 0xA60 (3 fan / 3 temp / 3 pwm)
+				io 0x60 = 0xa60
+				irq 0x70 = 0
+			end
+			device pnp 4e.7 on io 0x62 = 0xa50 end	# GPIO @ 0xA50
+		end
+	end
+end

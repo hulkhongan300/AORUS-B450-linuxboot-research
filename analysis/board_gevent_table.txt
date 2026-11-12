@@ -1,0 +1,8 @@
+# $A11 GEVENT/SCI map @ 0x4f40 size 0x90  (analysis/modules/AmdCpmOemInitPeim_1.efi)
+  GEVENT8   setting=0x0101 valid=1 -> GPE  8  trig=low/falling           edge   SCI_EN=0 bit4=0 SMI=off SMITRIG=0
+  GEVENT13  setting=0x01a1 valid=1 -> GPE 13  trig=low/falling           edge   SCI_EN=0 bit4=0 SMI=off SMITRIG=0
+  GEVENT10  setting=0x0149 valid=1 -> GPE 10  trig=low/falling           edge   SCI_EN=1 bit4=0 SMI=off SMITRIG=0
+# $A11 GEVENT/SCI map @ 0x30a8 size 0x90  (analysis/modules/AmdCpmOemInitPeim_2.efi)
+  GEVENT8   setting=0x0101 valid=1 -> GPE  8  trig=low/falling           edge   SCI_EN=0 bit4=0 SMI=off SMITRIG=0
+  GEVENT13  setting=0x01a1 valid=1 -> GPE 13  trig=low/falling           edge   SCI_EN=0 bit4=0 SMI=off SMITRIG=0
+  GEVENT10  setting=0x0149 valid=1 -> GPE 10  trig=low/falling           edge   SCI_EN=1 bit4=0 SMI=off SMITRIG=0

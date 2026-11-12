@@ -1,0 +1,27 @@
+# DRAFT / REFERENCE ONLY — coreboot flashmap for the 16 MiB SPI.
+#
+# A coreboot build defines its OWN layout; it does NOT keep the stock BIOS's region map.
+# The only hard constraints inherited from the stock image (see ../../flash_layout_full.txt):
+#   - AMD EFS stays at 0x20000 (fixed for 16 MiB; the on-die PSP looks for it there).
+#   - The AMDFW signed region (PSP/BHD + per-gen bootloader/ABL/SMU/PMU/APCB/microcode,
+#     ../../amdfw_psp_combo.txt) is packed by amdfwtool at AMD_FWM_POSITION_INDEX=4 and must
+#     be present and valid or the PSP halts before the x86 cores start.
+# coreboot replaces only the x86 BIOS volumes (DXE FV @0x94f000, PEI FV @0xe40000) with CBFS.
+#
+# This is a conventional AMD coreboot 16 MiB fmd; amdfwtool fills AMDFW inside COREBOOT/CBFS.
+
+FLASH@0xff000000 16M {
+	BIOS@0x0 16M {
+		# EFS + AMDFW land in the low part via amdfwtool (AMD_FWM_POSITION_INDEX=4).
+		RW_MRC_CACHE@0x30000 128K       # DRAM training cache (replaces stock NVRAM FV slot)
+		SMMSTORE(PRESERVE)@0x50000 256K # UEFI-less variable store, if used
+		FMAP@0x90000 8K
+		COREBOOT(CBFS)@0x92000          # bootblock + romstage + ramstage + payload + AMDFW
+	}
+}
+
+# Notes:
+#  - Offsets above are a plausible starting layout, NOT verified against a build (no AM4 SoC exists).
+#  - The stock image instead placed: NVRAM@0x37000, APCBs@0x241000/0x3b0000/..., Promontory FW
+#    @0x90f000/0x92f000, DXE FV@0x94f000, PEI FV@0xe40000 — all superseded by coreboot's own layout,
+#    except the AMDFW blobs which amdfwtool re-packs from the originals.

@@ -1,0 +1,41 @@
+# USB port map — faithful decode of ACPI _UPC (connector type) + _PLD (location) from the stock DSDT.
+# CAVEAT: _UPC connector TYPES are meaningful; AMI _PLD panel POSITIONS are often templated and may
+#   not match the real rear-panel layout. 'connectable' = _UPC[0]=0xFF. On desktops 'LEFT' panel = rear I/O.
+#   Port objects appear per USB2/USB3 'half' of a connector; consolidate by _PLD group for physical count.
+
+# USB port map from analysis/acpi/DSDT_AMI_d65ff902.dsl: 30 port objects with _UPC
+# dev    _ADR         connector        state        panel/Vpos/Hpos
+  POT3   0x03         Type-C USB3      connectable  LEFT/LOWER/CENTER
+  PO11   0x0B         Type-C USB3      connectable  LEFT/LOWER/CENTER
+  POT4   0x04         Type-C USB3      connectable  LEFT/LOWER/CENTER
+  PO12   0x0C         USB3 Std-A       connectable  LEFT/LOWER/LEFT
+  POT5   0x05         USB3 Std-A       connectable  LEFT/LOWER/LEFT
+  PO13   0x0D         USB3 Std-A       connectable  LEFT/LOWER/LEFT
+  POT6   0x06         USB3 Std-A       connectable  LEFT/LOWER/CENTER
+  PO14   0x0E         USB3 Std-A       connectable  LEFT/LOWER/CENTER
+  POT1   One          USB3 Std-A       connectable  RIGHT/UPPER/LEFT
+  POT9   0x09         USB3 Std-A       connectable  RIGHT/UPPER/LEFT
+  POT2   0x02         USB3 Std-A       connectable  RIGHT/LOWER/LEFT
+  PO10   0x0A         USB3 Std-A       connectable  RIGHT/LOWER/LEFT
+  POT7   0x07         USB3 Std-A       connectable  RIGHT/LOWER/LEFT
+  PO15   0x0F         USB3 Std-A       connectable  RIGHT/LOWER/LEFT
+  POT8   0x08         USB3 Std-A       connectable  RIGHT/LOWER/CENTER
+  PO16   0x10         USB3 Std-A       connectable  RIGHT/LOWER/CENTER
+  PO17   0x11         USB3 Std-A       connectable  LEFT/LOWER/LEFT
+  PO18   0x12         USB3 Std-A       connectable  LEFT/LOWER/LEFT
+  PO19   0x13         USB3 Std-A       connectable  LEFT/LOWER/CENTER
+  PO20   0x14         USB3 Std-A       connectable  LEFT/LOWER/CENTER
+  PO21   0x15         USB3 Std-A       connectable  LEFT/LOWER/CENTER
+  PO22   0x16         USB3 Std-A       connectable  LEFT/LOWER/CENTER
+  PRT1   One          USB3 Std-A       connectable  LEFT/UPPER/LEFT
+  PRT2   0x02         USB3 Std-A       connectable  LEFT/LOWER/LEFT
+  PRT3   0x03         USB3 Std-A       connectable  LEFT/LOWER/LEFT
+  PRT4   0x04         USB3 Std-A       connectable  LEFT/LOWER/CENTER
+  PRT5   0x05         USB3 Std-A       connectable  LEFT/UPPER/LEFT
+  PRT6   0x06         USB3 Std-A       connectable  LEFT/LOWER/LEFT
+  PRT7   0x07         USB3 Std-A       connectable  LEFT/LOWER/LEFT
+  PRT8   0x08         USB3 Std-A       connectable  LEFT/LOWER/CENTER
+
+# Connector-type summary:
+      3 Type-C USB3
+     27 USB3 Std-A

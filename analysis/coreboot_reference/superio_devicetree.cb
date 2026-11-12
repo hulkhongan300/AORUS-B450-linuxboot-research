@@ -1,0 +1,53 @@
+# REFERENCE ONLY - not buildable: upstream coreboot has no AM4/B450 mainboard to hold this.
+# Translates the Super I/O programming decoded from Gigabyte's IT8728FPeiInit
+# (analysis/superio_it87_tables.txt) into coreboot devicetree syntax.
+# Chip 1 (0x2E, key 87 01 55 55) is believed to be IT8686E. The closest upstream driver
+# is superio/ite/it8689e, which has the same LDN layout (4=EC, 5=KBC, 7=GPIO) and the same Gigabyte init table.
+# Chip 2 (0x4E, key 87 01 55 AA) is believed to be IT8792E. There is no upstream driver; unconfirmed ID.
+
+chip superio/ite/it8689e                  # stand-in for an it8686e driver
+	device pnp 2e.1 off end               # COM1: not programmed by Gigabyte PEI (no header on this board?)
+	device pnp 2e.2 off end               # COM2
+	device pnp 2e.4 on                    # Environment controller / HW monitor
+		io  0x60 = 0xa40                  # CR60/61 = 0x0A,0x40 -> HWM index/data at 0xA45/0xA46
+		io  0x62 = 0xa30                  # CR62/63 = 0x0A,0x30 -> PME base (DSDT IO2B = 0xA30)
+		irq 0x70 = 0                      # CR70 = 0
+		# CR30 = 01 (activate). Common table (all chips): CRF0=00 CRF1=B9 CRF2=00 CRF3=00 CRF4=00,
+		#   CRF5&=3F, CRFB=(&F3)|0C, later CRF3&=FD, CRF4&=7F, CRF0=00, CRF3=00, CRF4&=9F, CRF6=00.
+		# IT8686/88/89 table then overrides CRFB=(&F0)|0E.
+		# (Gigabyte's final "CR02=02" write is the ITE exit-config-mode command, not a setting.)
+	end
+	device pnp 2e.5 on                    # PS/2 keyboard
+		io  0x60 = 0x60
+		io  0x62 = 0x64
+		irq 0x70 = 1
+		# LDN5 CRF0 = (&F7)|08
+	end
+	device pnp 2e.6 off end               # PS/2 mouse: not enabled by PEI
+	device pnp 2e.7 on                    # GPIO (no activate bit; base programmed)
+		io  0x62 = 0xa00                  # CR62/63 = 0x0A,0x00 -> simple-I/O GPIO base
+		# IT8686/88/89-only writes while LDN7 is selected:
+		#   CRD3 |= 02, CRD5 &= FD, CREB = 49, CRFA = 49, CRFB = (&6F)|40, CR71 &= F7
+		# Global (any LDN): CR23 &= 1F then &= FE then &= F7, CR25 &= 08, CR27 = 00, CR28 &= 40 (and &BF),
+		#   CR29 = 00, CR2A &= DF, CR2B &= F8, CR2C = 80 then (&F7)|08, CR72 &= EF
+	end
+	device pnp 2e.a off end               # CIR
+end
+
+# Chip 2 - no coreboot driver. Raw sequence Gigabyte uses (port 0x4E, key 87 01 55 AA):
+#   LDN 4: CR30=01, CR60/61=0x0A60 (2nd HWM; DSDT H2MB=0xA60, HMIO=0xA65), CR70=00
+#   LDN 5: CR30=00 (disabled)
+#   LDN F: CR30=01, CRF5=00, CRF6=00
+#   LDN 7: CR62/63=0x0A50 (GPIO)
+#   LDN10: CR60/61=0x0A68, CR30=01 ; later out(0xA68,0x29) out(0xA69,0x00)
+#   LDN11: CR70=00 ; LDN12: CR70=00
+#   global CR23 &= FE
+#
+# HWM init done by Gigabyte right after (chip-1 EC at 0xA45/0xA46):
+#   reg 0x50 = FF, reg 0x51 = 38, reg 0x00 = 01 then 40   (enable monitoring/start)
+#   CPU-family specific (GbtCrbPei FUN_09dedbe9): Zen/Zen+ -> reg 0x67 &= 3F (+ B3=79,B2=87 on Raven)
+#
+# Required FCH LPC decode (00:14.3), from FUN_09dfd084 -> coreboot soc/amd/common/block/lpc:
+#   lpc_enable_sio_decode(0x2e) and 0x4e      (cfg 0x48 bits 0/1)
+#   wide IO windows: 0xA00 size 0x50, 0xA50 size 0x20   (cfg 0x64/0x66/0x90, enable 0x74)
+#   KBC 0x60/0x64 decode (cfg 0x44/0x48 kind 2)

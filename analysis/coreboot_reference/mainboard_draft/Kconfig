@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: GPL-2.0-only
+# DRAFT / REFERENCE ONLY — depends on a hypothetical AM4-desktop SoC (not upstream).
+if BOARD_GIGABYTE_B450_AORUS_PRO
+
+config BOARD_SPECIFIC_OPTIONS
+	def_bool y
+	select SOC_AMD_AM4_DESKTOP		# hypothetical; would be SUMMIT/PINNACLE/MATISSE/VERMEER
+	select BOARD_ROMSIZE_KB_16384		# 16 MiB SPI (verified: image is 0x1000000)
+	select SUPERIO_ITE_IT8686E		# TODO: driver does not exist upstream
+	select SUPERIO_ITE_IT8792E		# TODO: driver does not exist upstream
+	select HAVE_ACPI_TABLES
+
+config FMDFILE
+	default "src/mainboard/gigabyte/b450_aorus_pro/board.fmd"
+
+config MAINBOARD_DIR
+	default "gigabyte/b450_aorus_pro"
+
+config MAINBOARD_PART_NUMBER
+	default "B450 AORUS PRO"
+
+config AMD_FWM_POSITION_INDEX
+	int
+	default 4				# 16 MiB layout
+
+endif

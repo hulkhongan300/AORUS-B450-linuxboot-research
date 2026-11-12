@@ -1,0 +1,18 @@
+# Promontory SATA options: cfg offset, PCD token, PCD default, effect (FchPromontoryCbsPei FUN_09cac2e8)
+  +0x0e  token 0x16a  default=0  SATA class: 0=AHCI (DID 43c8) / 1=RAID (DID 43bd)
+  +0x0f  token 0x113  default=0  reg 0xD0A bit0
+  +0x10  token 0x2d0  default=0  reg 0xD0A bit1
+  +0x11  token 0x14e  default=1  reg 0xD00 bit26
+  +0x12  token 0x2fc  default=1  reg 0xD00 bit13
+  +0x13  token 0x142  default=1  reg 0xD00 bit14
+  +0x15  token 0x0da  default=0  port0 reg 0xF45: 1->0x90 2->0xA0 3->0xC0 else 0
+  +0x16  token 0x297  default=0  port1 reg 0xF45 (same encoding)
+  +0x17  token 0x068  default=0  regs 0xDC8..0xDCF bit3 (all 8 ports)
+  +0x18  token 0x2fa  default=1  SATA port 0 enable (0x81C/0xD06 bit 0)
+  +0x19  token 0x027  default=1  SATA port 1 enable (0x81C/0xD06 bit 1)
+  +0x1a  token 0x139  default=1  SATA port 2 enable (0x81C/0xD06 bit 2)
+  +0x1b  token 0x08c  default=1  SATA port 3 enable (0x81C/0xD06 bit 3)
+  +0x1c  token 0x13c  default=1  SATA port 4 enable (0x81C/0xD06 bit 4)
+  +0x1d  token 0x2a2  default=1  SATA port 5 enable (0x81C/0xD06 bit 5)
+  +0x1e  token 0x2a7  default=1  SATA port 6 enable (0x81C/0xD06 bit 6)
+  +0x1f  token 0x197  default=1  SATA port 7 enable (0x81C/0xD06 bit 7)

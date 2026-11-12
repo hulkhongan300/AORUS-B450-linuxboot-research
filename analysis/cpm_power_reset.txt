@@ -1,0 +1,10 @@
+######## AmdCpmOemInitPeim_1
+
+## $A15 device RESET sequence @ 0xdd0 size=0x110 platmask=0x0
+
+## $A13 device POWER sequence @ 0x1e38 size=0x210 platmask=0x0
+######## AmdCpmOemInitPeim_2
+
+## $A13 device POWER sequence @ 0x12e0 size=0x210 platmask=0x0
+
+## $A15 device RESET sequence @ 0x36b8 size=0x110 platmask=0x0

@@ -1,0 +1,10 @@
+# UEFI firmware volumes (_FVH verified) in B450AORUSPRO.F67c
+# offset      length      guid                              note
+  0x0037000  0x00020000  78e58c8c3d8a1c4f9935896185c32dd3  NVRAM (UEFI variables)
+  0x094f000  0x004f0000  78e58c8c3d8a1c4f9935896185c32dd3  MAIN DXE FV (309 drivers, ~12.6MB decompressed)
+  0x09500c0  0x00020000  78e58c8c3d8a1c4f9935896185c32dd3  nested FV in DXE
+  0x0970110  0x00001000  78e58c8c3d8a1c4f9935896185c32dd3  small freeform
+  0x0e3f000  0x00001000  78e58c8c3d8a1c4f9935896185c32dd3  small freeform
+  0x0e40000  0x001c0000  78e58c8c3d8a1c4f9935896185c32dd3  PEI/bootblock FV (RTM; BHD 0x62 -> 0xe42000, ~3.9MB decompressed)
+
+# AMDFW (PSP/BHD signed region, fixed) and other non-FV content: see amdfw_psp_combo.txt

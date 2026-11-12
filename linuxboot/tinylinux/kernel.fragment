@@ -1,0 +1,122 @@
+# Size-first LinuxBoot kernel for the B450 AORUS PRO (applied on top of `make tinyconfig`).
+# Modeled on coreboot payloads/external/LinuxBoot/x86_64/defconfig, minus everything this board/use doesn't need.
+CONFIG_64BIT=y
+CONFIG_KERNEL_XZ=y
+CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+CONFIG_PRINTK=y
+CONFIG_FUTEX=y
+CONFIG_BINFMT_ELF=y
+CONFIG_BINFMT_SCRIPT=y
+CONFIG_BLK_DEV_INITRD=y
+CONFIG_INITRAMFS_SOURCE="initramfs.list"
+CONFIG_INITRAMFS_COMPRESSION_NONE=y
+CONFIG_CMDLINE_BOOL=y
+CONFIG_CMDLINE="console=tty0 console=ttyS0,115200 loglevel=4"
+# firmware interface: launched by UEFI as an EFI app; ACPI for PCI IRQ routing on real hardware
+CONFIG_EFI=y
+CONFIG_EFI_STUB=y
+CONFIG_ACPI=y
+CONFIG_CPU_SUP_AMD=y
+CONFIG_PCI=y
+CONFIG_PCI_MSI=y
+# the one feature LinuxBoot exists for
+CONFIG_KEXEC_FILE=y
+# userspace plumbing
+CONFIG_PROC_FS=y
+CONFIG_SYSFS=y
+CONFIG_DEVTMPFS=y
+CONFIG_TTY=y
+CONFIG_VT=y
+CONFIG_VT_CONSOLE=y
+CONFIG_UNIX98_PTYS=y
+CONFIG_SERIAL_8250=y
+CONFIG_SERIAL_8250_CONSOLE=y
+# screen: reuse the framebuffer UEFI GOP already set up
+CONFIG_FB=y
+CONFIG_FB_EFI=y
+CONFIG_FRAMEBUFFER_CONSOLE=y
+# keyboard: PS/2 + USB HID
+CONFIG_INPUT=y
+CONFIG_INPUT_KEYBOARD=y
+CONFIG_SERIO=y
+CONFIG_SERIO_I8042=y
+CONFIG_KEYBOARD_ATKBD=y
+CONFIG_HID_SUPPORT=y
+CONFIG_HID=y
+CONFIG_HID_GENERIC=y
+CONFIG_USB_HID=y
+# storage: NVMe, SATA (Promontory AHCI), USB sticks
+CONFIG_BLOCK=y
+CONFIG_PARTITION_ADVANCED=y
+CONFIG_MSDOS_PARTITION=y
+CONFIG_EFI_PARTITION=y
+CONFIG_BLK_DEV_NVME=y
+CONFIG_SCSI=y
+CONFIG_BLK_DEV_SD=y
+CONFIG_ATA=y
+CONFIG_SATA_AHCI=y
+CONFIG_USB_SUPPORT=y
+CONFIG_USB=y
+CONFIG_USB_PCI=y
+CONFIG_USB_XHCI_HCD=y
+CONFIG_USB_STORAGE=y
+# filesystem the kernels live on (EFI system partition)
+CONFIG_VFAT_FS=y
+CONFIG_NLS=y
+CONFIG_NLS_CODEPAGE_437=y
+CONFIG_NLS_ISO8859_1=y
+# ---- size trims: features a boot menu never uses ----
+# target kernel unpacks its own initrd; ours is embedded uncompressed -> no initrd decompressors
+# CONFIG_RD_GZIP is not set
+# CONFIG_RD_BZIP2 is not set
+# CONFIG_RD_LZMA is not set
+# CONFIG_RD_XZ is not set
+# CONFIG_RD_LZO is not set
+# CONFIG_RD_LZ4 is not set
+# CONFIG_RD_ZSTD is not set
+# Ryzen only (QEMU's TCG CPU also reports AuthenticAMD); microcode is already loaded by the PSP/firmware
+CONFIG_PROCESSOR_SELECT=y
+# CONFIG_CPU_SUP_INTEL is not set
+# CONFIG_CPU_SUP_HYGON is not set
+# CONFIG_CPU_SUP_CENTAUR is not set
+# CONFIG_CPU_SUP_ZHAOXIN is not set
+# CONFIG_MICROCODE is not set
+# CONFIG_PERF_EVENTS is not set
+# CONFIG_RANDOMIZE_BASE is not set
+CONFIG_LOG_BUF_SHIFT=14
+# ACPI: keep tables/IRQ routing/EC, drop power-management drivers
+# CONFIG_ACPI_AC is not set
+# CONFIG_ACPI_BATTERY is not set
+# CONFIG_ACPI_BUTTON is not set
+# CONFIG_ACPI_FAN is not set
+# CONFIG_ACPI_PROCESSOR is not set
+# CONFIG_ACPI_THERMAL is not set
+# CONFIG_ACPI_TABLE_UPGRADE is not set
+# CONFIG_ACPI_DEBUG is not set
+# CONFIG_ACPI_PRMT is not set
+# CONFIG_CPU_IDLE is not set
+# EFI extras (keep EFI_RUNTIME_MAP: kexec hands UEFI runtime to the next kernel)
+# CONFIG_EFI_ESRT is not set
+# CONFIG_EFI_CUSTOM_SSDT_OVERLAYS is not set
+# CONFIG_EFIVAR_FS is not set
+# CONFIG_EFI_HANDOVER_PROTOCOL is not set
+# serial: board COM header is LPC/PNP, not PCI
+# CONFIG_SERIAL_8250_PCI is not set
+# CONFIG_SERIAL_8250_EXAR is not set
+# CONFIG_SERIAL_8250_LPSS is not set
+# CONFIG_SERIAL_8250_MID is not set
+# CONFIG_SERIAL_8250_PERICOM is not set
+# CONFIG_SERIAL_8250_DEPRECATED_OPTIONS is not set
+# SATA only: no legacy PATA/port multipliers
+# CONFIG_ATA_SFF is not set
+# CONFIG_SATA_PMP is not set
+# CONFIG_ATA_VERBOSE_ERROR is not set
+# CONFIG_ATA_FORCE is not set
+# CONFIG_SCSI_PROC_FS is not set
+# CONFIG_SCSI_LOWLEVEL is not set
+# UEFI GOP framebuffer only
+# CONFIG_VGA_CONSOLE is not set
+# CONFIG_FB_DEVICE is not set
+# CONFIG_INPUT_MOUSE is not set
+# CONFIG_MQ_IOSCHED_DEADLINE is not set
+# CONFIG_MQ_IOSCHED_KYBER is not set

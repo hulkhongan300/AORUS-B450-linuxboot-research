@@ -1,0 +1,40 @@
+# IT8686E hardware-monitor / fan-controller init (primary Super I/O @ 0x2E, HWM @ 0xA40)
+# Source: GbtCrbPei FUN_09dedbe9 (analysis/decomp/GbtCrbPei_1.efi.c), decoded Session 5.
+# HWM access is index/data at I/O 0xA45 (index) / 0xA46 (data) — the LDN4 EC base 0xA40 + 5/6.
+# Register names follow the ITE IT86xx "SmartGuardian" HWM convention.
+#
+# The sequence is selected by CPU family class (0x15/0x17/0x19 from the CPUID check in FUN_09dee430):
+#   0x15 = Zen / Zen+        (Summit/Pinnacle Ridge) -- THIS 2700X BOARD
+#   0x17 = Raven / Picasso   (Zen APU)
+#   0x19 = Matisse / Vermeer (Zen2/Zen3)
+#
+# -------- 0x15 : Zen / Zen+ --------
+#   # First, a Super I/O tweak (enter config @0x2E, LDN7, CR2C bit3 = 0):
+#   out(0x2E,87 01 55 55)            ; enter IT8686E config
+#   LDN = 7                          ; GPIO/multi-function LDN
+#   CR2C &= 0xF7                     ; clear bit 3 (pin mux)
+#   out(0x2E,02) out(0x2F,02)        ; exit config
+#   # Then HWM registers (index 0xA45 / data 0xA46):
+#   reg 0x67 = (cur & 0x3F) | 0x80   ; set bit7 (ADC/temp source enable)
+#   reg 0xB3 = 0x8F                  ; fan/tach control
+#   reg 0xB2 = 0x92                  ; fan control main (SmartGuardian mode)
+#
+# -------- 0x17 : Raven / Picasso --------
+#   reg 0x67 = (cur & 0x3F)          ; clear bit7
+#   (only if CPU sub-field == 1:)
+#   reg 0xB3 = 0x79
+#   reg 0xB2 = 0x87
+#
+# -------- 0x19 : Matisse / Vermeer --------
+#   reg 0x67 = (cur & 0x3F)          ; clear bit7 (no B2/B3 writes)
+#
+# Notes:
+#  - reg 0x67 bit7 differs by family because the CPU temperature source (reg B2/B3 route the
+#    external PECI/SB-TSI temperature into the fan control loop) is wired differently per SoC.
+#  - The second Super I/O (IT8792E @ 0xA60, CONFIRMED live as it8792-isa-0a60) drives the
+#    remaining 3 fans / 3 temps / 3 PWM; its base is programmed by IT8728FPeiInit (see
+#    superio_it87_tables.txt, port-0x4E tables), not touched by this GbtCrbPei routine.
+#  - Fan *curves* (temp->PWM points) are configured later by the Setup/SMM layer, not here.
+#
+# For a coreboot port: this belongs in mainboard.c after superio init, as a short
+# ite_ec / raw-index write sequence gated on the CPU family.

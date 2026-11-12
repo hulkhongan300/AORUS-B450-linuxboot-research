@@ -1,0 +1,12 @@
+# GPE 0x0A source — RESOLVED (from live acpidump, 2026-11-11)
+# It is a RUNTIME-generated AMD CPM SSDT (OEM id 'MYRTLE'), absent from static F67c.
+# Dynamic AMD SSDTs present live but NOT in the flash image:
+#   MYRTLE (CPM board), AmdTable, FCHZP, 'AMD AOD' (AMD overclocking)
+# Matches static $A11: GEVENT10 -> GPE10 (0x0A), SCI_EN=1 (FINDINGS 4d).
+
+What the _L0A handler does (described, vendor ASL not reproduced):
+- Reads the pending GEVENT bits from the CPM NVS region (fields M411/M415/M416/M419).
+- XORs them with the previous state to find which inputs changed, then masks with the enable bits.
+- For each changed bit n, calls the optional hook \_GPE.SPnn if the OS/board defines it.
+So GPE 0x0A is a generic GPIO/GEVENT SCI dispatcher, not a single fixed device.
+Reproduce: `sudo acpidump -b`, then `iasl -d` on the SSDT whose OEM table id is MYRTLE.

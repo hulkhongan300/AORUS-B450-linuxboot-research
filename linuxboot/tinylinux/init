@@ -1,0 +1,37 @@
+#!/bin/sh
+# tinylinux /init: LinuxBoot-style boot menu in ~60 lines of busybox sh.
+# Finds BootLoaderSpec entries (loader/entries/*.conf) on any FAT partition and kexecs the chosen one.
+export PATH=/bin
+mount -t proc proc /proc; mount -t sysfs sys /sys; mount -t devtmpfs dev /dev
+echo; echo "tinylinux: open boot menu (Linux $(cat /proc/sys/kernel/osrelease), busybox, kexec_file_load)"
+sleep 3   # let NVMe / AHCI / USB finish probing
+n=0
+for d in /sys/class/block/*; do
+    name=${d##*/}; mnt=/mnt/$name
+    mkdir -p "$mnt"
+    mount -t vfat -o ro "/dev/$name" "$mnt" 2>/dev/null || { rmdir "$mnt"; continue; }
+    for e in "$mnt"/loader/entries/*.conf; do
+        [ -f "$e" ] || continue
+        n=$((n+1))
+        t=$(sed -n 's/^title[[:space:]]*//p' "$e"); [ -n "$t" ] || t=${e##*/}
+        k=$mnt$(sed -n 's/^linux[[:space:]]*//p' "$e" | head -n1)
+        o=$(sed -n 's/^options[[:space:]]*//p' "$e" | tr '\n' ' ')
+        i=$(sed -n 's/^initrd[[:space:]]*//p' "$e" | sed "s|^|$mnt|" | tr '\n' ' ')
+        eval "T$n=\$t; K$n=\$k; I$n=\$i; O$n=\$o"
+        echo "  $n) $t   [$name]"
+    done
+done
+shell() { echo "dropping to shell (exit to return to menu)"; setsid cttyhack sh; }
+while true; do
+    if [ "$n" -eq 0 ]; then echo "no boot entries found"; shell; continue; fi
+    echo "  s) shell"
+    c=1; read -t 5 -p "boot [1-$n, s] (default 1 in 5s): " c || echo; [ -n "$c" ] || c=1
+    [ "$c" = s ] && { shell; continue; }
+    eval "k=\$K$c; i=\$I$c; o=\$O$c; t=\$T$c"
+    [ -n "$k" ] || { echo "invalid choice"; continue; }
+    ird=-
+    if [ -n "$i" ]; then cat $i > /initrd.img && ird=/initrd.img; fi   # several initrd lines (ucode + main) concatenate
+    echo "kexec: $t"; echo "  kernel  $k"; echo "  initrd  ${i:--}"; echo "  cmdline $o"
+    kexec-boot "$k" "$ird" "$o"
+    echo "kexec failed"
+done
